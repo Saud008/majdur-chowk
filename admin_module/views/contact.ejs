@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('partials/contact_header'); -%>
+
+<body>
+    <body>
+        <div class="head">
+            <div class="header1">
+                <div class="container">
+                    <div class="a">
+                    <div class="navbar">
+                        <div class="logo">
+                            <a href="/"><img src="images/logo.png" width="125px"></a>
+                        </div>
+                        <nav>
+                            <ul id="MenuItems">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/services">Services</a></li>
+                                <li><a href="/about">About</a></li>
+                                <li><a href="/contact">Contact</a></li>
+                            </ul>
+                        </nav>
+                        <% if(status == 1) { %>
+                            <div class="dropdown">
+                                <a href="#"><img src="images/profile_avatar_main.png" style="height: 45px; margin-right: 15px;" class="dropbtn"></a>
+                                <div class="dropdown-content">
+                                    <a href="/my-account">My Account</a>
+                                    <a href="/my-orders">My Orders</a>
+                                    
+                                    <a href="/signOut">Sign Out</a>
+                                </div>
+                            </div>
+                        <% }
+                         else { %>
+                        <a href="/login" style="margin-right: 15px;">LOGIN</a>
+                        <% } %>
+                        <a href="/cart" style="position:relative;">
+                            <img src="/images/cart_dark.png" height="30px" width="30px" style="margin-top: 5px; margin-right: 10px;">
+                            <span style="position:absolute; top:-5px; right:-10px; background-color:red; color:white; border-radius:50%; width:20px; height:20px; text-align:center; font-size:12px; font-weight:bold;">
+                              <%= cart.items.length %>
+                            </span>
+                          </a>
+                    </div> 
+            </div>
+            <hr style="display: block;">
+    </div>
+
+
+    <!--------------Featured product---------------->
+        <!-----------Contact Us------------>
+        <div class="new22">
+            <h1 style="text-align: center; margin-top: 10px;">Contact Us</h1>
+        <section class="contact-us">
+            <div class="row">
+                <div class="contact-col">
+                    <div>
+                        <i class="fa fa-home"></i>
+                        <span>
+                            <h5>XYZ road, ABC Bulding</h5>
+                            <p>Vasna, Ahmedabad, IN</p>
+                        </span>
+                    </div>
+                    <div>
+                        <i class="fa fa-phone"></i>
+                        <span>
+                            <h5>+91-2223334456</h5>
+                            <p>Monday to Saturday, 10AM to 6PM</p>
+                        </span>
+                    </div>
+                    <div>
+                        <i class="fa fa-envelope-o"></i>
+                        <span>
+                            <h5>veeserveservices@gmail.com</h5>
+                            <p>Email us your query</p>
+                        </span>
+                    </div>
+                </div>
+                <div class="contact-col">
+                    <form action="/contact-us" method="post">
+                        <input type="text" name="name" placeholder="Enter your Name" required>
+                        <input type="email" name="email" placeholder="Enter email address" required>
+                        <input type="text" name="subject" placeholder="Enter your Subject" required>
+                        <textarea rows="8" name="message" placeholder="Message" required></textarea>
+                        <button type="submit" class="hero-btn red-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script>
+        function sendEmail() {
+        Email.send({
+            Host: "sandbox.smtp.mailtrap.io",
+            Username: "bf35a991efdb01", // Update with your actual email address
+            Password: "badc8be78c49ea", // Update with your actual email password
+            To: "veeserveservices@gmail.com",
+            From: document.getElementById('email').value,
+            Subject: `${document.getElementById('subject').value}`,
+            Body: `Name: ${document.getElementById('name').value} <br/> Email: ${document.getElementById('email').value} <br/> Message: ${document.getElementById('message').value}`,
+        }).then(
+            message => {
+                alert("Mail sent successfully");
+                document.getElementById('contactForm').reset(); // Reset the form after successful submission
+            }
+        );
+    }
+    </script>
+    <!-------------Fotter------------->
+
+    <%- include('partials/footer'); -%>
+
+</body>
+
+</html>

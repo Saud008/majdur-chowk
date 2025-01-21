@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/my-account_header'); -%>
+
+    <body>
+        <div class="container">
+            <div class="navbarr">
+                <div class="logoo">
+                    <div class="c">
+                    <a href="/"><img src="images/logo.png" width="125px"></a></div>
+                </div>
+                <nav>
+                    <ul id="MenuItems">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <% if(status == 1) { %>
+                    <div class="dropdown">
+                        <a href="#"><img src="images/profile_avatar_main.png" style="height: 45px; margin-right: 15px;" class="dropbtn"></a>
+                        <div class="dropdown-content">
+                            <a href="/my-account">My Account</a>
+                            <a href="/my-orders">My Orders</a>
+                            
+                            <a href="/signOut">Sign Out</a>
+                        </div>
+                    </div>
+                        
+                <% }
+                 else { %>
+                    <a href="/login" style="margin-right: 15px;">LOGIN</a>
+                <% } %>
+                <a href="/cart" style="position:relative;">
+                    <img src="/images/cart_dark.png" height="30px" width="30px" style="margin-top: 5px; margin-right: 10px;">
+                    <span style="position:absolute; top:-5px; right:-10px; background-color:red; color:white; border-radius:50%; width:20px; height:20px; text-align:center; font-size:12px; font-weight:bold;">
+                      <%= cart.items.length %>
+                    </span>
+                  </a>
+                  
+            </div> 
+            </div>
+
+            <hr style="display: block;">
+
+        </section>
+        <!-- my-account.ejs -->
+
+<h1 class="formh1">My Account</h1>
+
+<!-- Display user details -->
+<p>Full Name: <%= fullName %></p>
+<p>Email Address: <%= emailAddress %></p>
+<p>Contact: <%= contact %></p>
+<p>Address: <%= address %></p>
+
+<!-- Update form -->
+<form action="/my-account" method="POST">
+  <h2 class="formh2">Update Account Details</h2>
+  
+  <div class="formDiv">
+    <label for="fullName">Full Name:</label>
+    <input type="text" id="fullName" name="fullName" value="<%= fullName %>" required>
+  </div>
+  
+  <div class="formDiv">
+    <label for="emailAddress">Email Address:</label>
+    <input type="email" id="emailAddress" name="emailAddress" value="<%= emailAddress %>" required>
+  </div>
+  
+  <div class="formDiv">
+    <label for="contact">Contact:</label>
+    <input type="text" id="contact" name="contact" value="<%= contact %>" required>
+  </div>
+  
+  <div class="formDiv">
+    <label for="address">Address:</label>
+    <textarea id="address" name="address" required><%= address %></textarea>
+  </div>
+  
+  <button type="submit">Update</button>
+</form>
+
+</body>
+</html>

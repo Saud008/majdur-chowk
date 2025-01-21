@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel:Login</title>
+    <link rel="icon" type="image/x-icon" href="/images/logo_2.png">
+    <link rel="stylesheet" href="admin_service_form.css">
+</head>
+<body>
+    <input type="checkbox" id="nav-toggle">
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <a><h1><span>VeeServe</span></h1></a>
+        </div>
+    </div>
+    <header style="width: 100%;">
+        <h1>
+           
+            Welcome to Admin Panel
+        </h1>
+    </header>
+    <div class="main-content">
+        <div class="cards">
+            <div class="card-double">
+                <div>
+                    <form action="/" method="post">
+                        <table id="add-a-service">
+                            <tr>
+                                <h3> <%=message%></h3>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="service">Email Address</label>
+                                </td>
+                                <td>
+                                    <input type="email" name="username" required> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="service">Password</label>
+                                </td>
+                                <td>
+                                    <input type="password" name="password" required>
+                                </td>
+                            </tr>
+                            
+                        </table>
+                        <center><input type="submit" value="Login"></center>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+</body>
+</html>

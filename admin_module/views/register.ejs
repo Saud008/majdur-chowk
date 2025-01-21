@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Register</title>
+    <meta charset="UTF-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/logo_2.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie-edge" />
+    <!--<title> Registration Form in HTML CSS</title> -->
+    <!--- Custom CSS File--->
+    <link rel="stylesheet" href="register_style.css" />
+</head>
+
+<body>
+    <div class="logo">
+        <a href="/"><img src="images/logo.png" width="180px"></a>
+    </div>
+    <section class="container">
+        <h1> Sign Up </h1>
+        
+        <form action="/register" class="form" method="post" id="registration-form" novalidate>
+            <div class="input-box">
+              <label>Name</label>
+              <input type="text" placeholder="Enter full name" required name="name" />
+            </div>
+            <div class="column">
+                <div class="input-box">
+                  <label>Contact Number</label>
+                  <input type="number" name="contact" placeholder="Enter Contact Number" required/>
+                </div>
+              </div>
+            <div class="input-box">
+              <label>Email Address</label>
+              <input type="email" placeholder="Enter email address" required name="email" />
+            </div>
+           
+          
+          
+         
+            <div class="column">
+              <div class="input-box">
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Enter Password" required/>
+              </div>
+            </div>
+          
+            <div class="column">
+              <div class="input-box">
+                <label>Confirm Password</label>
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" required/>
+              </div>
+            </div>
+          
+           
+          
+            <button type="submit" class="form_button">Submit</button>
+          </section>
+          
+         
+        <button class="btn" onclick="window.location.href='/'" style="margin-top: 10px;font-size: medium;">Home</button>
+ 
+</body>
+</html>

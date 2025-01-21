@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/my-orders_header'); -%>
+
+<body>
+    <div class="container">
+        <div class="navbarr">
+            <div class="logoo">
+                <div class="c">
+                <a href="/"><img src="images/logo.png" width="125px"></a></div>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+            <% if(status == 1) { %>
+                <div class="dropdown">
+                    <a href="#"><img src="images/profile_avatar_main.png" style="height: 45px; margin-right: 15px;" class="dropbtn"></a>
+                    <div class="dropdown-content">
+                        <a href="/my-account">My Account</a>
+                        <a href="/my-orders">My Orders</a>
+                        
+                        <a href="/signOut">Sign Out</a>
+                    </div>
+                </div>
+                    
+            <% }
+             else { %>
+                <a href="/login" style="margin-right: 15px;">LOGIN</a>
+            <% } %>
+            <a href="/cart" style="position:relative;">
+                <img src="/images/cart_dark.png" height="30px" width="30px" style="margin-top: 5px; margin-right: 10px;">
+                <span style="position:absolute; top:-5px; right:-10px; background-color:red; color:white; border-radius:50%; width:20px; height:20px; text-align:center; font-size:12px; font-weight:bold;">
+                  <%= cart.items.length %>
+                </span>
+              </a>
+              
+        </div> 
+        </div>
+
+        <hr style="display: block;">
+
+    </section>
+    
+    <section class="container">
+        <h1>My Orders</h1>
+
+        <% if (orders.length === 0) { %>
+        <p>No orders available.</p>
+        <% } else { %>
+        <table>
+            <thead>
+                <tr >
+                    <th>Service</th>
+                    <th>Service Provider</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th style="text-align: left;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(order => { %>
+                    <% const orderDate = new Date(order.date) %>
+                    <% if (order.status === 'Cancelled') { %>
+                        <tr style="background-color: #f2dede;">
+                            <td style="text-align: left;"><%= order.serviceId.name %></td>
+                    
+                            <% if (order.serviceProviderId == null) { %>
+                                <td style="text-align: left;">N/A</td>
+                            <% } else { %>
+                    <td style="text-align: left;"><%= order.serviceProviderId.name %></td>
+                            <% } %>
+                    <td style="text-align: left;"><%= orderDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long' }) %></td>
+                    <td style="text-align: left;"><%= order.timeSlot %></td>
+                    <td style="font-weight: bold; color: red; text-align: left;"><%= order.status %></td>
+                    <td style="text-align: left;">
+                        <% if (order.status === 'Yet To Serve') { %>
+                            <button onclick="cancelBooking('<%= order._id %>')">Cancel</button>
+                        <% } else { %>
+                            <td> </td>
+                        <% } %>
+                    </td>
+                </tr>
+                    <% } else { %>
+                    <tr>
+                    <td style="text-align: left;"><%= order.serviceId.name %></td>
+                    <% if (order.serviceProviderId == null) { %>
+                        <td style="text-align: left;">N/A</td>
+                    <% } else { %>
+            <td style="text-align: left;"><%= order.serviceProviderId.name %></td>
+                    <% } %>
+                    <td style="text-align: left;"><%= orderDate.toLocaleDateString('en-US', { day: 'numeric', month: 'long' }) %></td>
+                    <td style="text-align: left;"><%= order.timeSlot %></td>
+                    <td style="text-align: left;"><%= order.status %></td>
+                    <td style="text-align: left;">
+                        <% if (order.status === 'Yet To Serve') { %>
+                            <button onclick="cancelBooking('<%= order._id %>')">Cancel</button>
+                        <% } else { %>
+                            <td> </td>
+                        <% } %>
+                    </td>
+                </tr>
+                <% } %>
+                <% }) %>
+            </tbody>
+        </table>
+        <% } %>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+function cancelBooking(orderId) {
+  // Ask for confirmation through an alert
+  if (confirm("Are you sure you want to cancel this booking?")) {
+    // Send a request to update the booking status
+    fetch(`/cancel-booking/${orderId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: 'cancelled' })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Update the page or show a success message
+        alert('Booking cancelled successfully');
+        window.location.reload(); // Refresh the page
+      } else {
+        // Handle the error if the cancellation failed
+        alert('Failed to cancel the booking');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert('An error occurred while cancelling the booking');
+    });
+  }
+}
+</script>
+
+</body>
+
+</html>

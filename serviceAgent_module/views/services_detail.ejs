@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('partials/services_detail_header'); -%>
+
+<body>
+    <div class="container">
+        <div class="navbarr">
+            <div class="logoo">
+                <div class="c">
+                <a href="/"><img src="/images/logo.png" width="125px"></a></div>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+            <% if(status == 1) { %>
+                <div class="dropdown">
+                    <a href="#"><img src="/images/profile_avatar_main.png" style="height: 45px; margin-right: 15px;" class="dropbtn"></a>
+                    <div class="dropdown-content">
+                        <a href="/my-account">My Account</a>
+                        <a href="/my-orders">My Orders</a>
+                        
+                        <a href="/signOut">Sign Out</a>
+                    </div>
+                </div>
+                    
+            <% }
+             else { %>
+                <a href="/login" style="margin-right: 15px;">LOGIN</a>
+            <% } %>
+            <a href="/cart" style="position:relative;">
+                <img src="/images/cart_dark.png" height="30px" width="30px" style="margin-top: 5px; margin-right: 10px;">
+                <span style="position:absolute; top:-5px; right:-10px; background-color:red; color:white; border-radius:50%; width:20px; height:20px; text-align:center; font-size:12px; font-weight:bold;">
+                  <%= cart.items.length %>
+                </span>
+              </a>
+        </div>
+        </div>
+        <hr style="display: block;">
+            <!-- Main -->
+            <div class="product">
+                <% let currentSubCategory = null %>
+                <% subcategoryServices.forEach(subcategory => { %>
+                  <div class="subcategory">
+                    <h1 class="subcategory-title" style="text-align: center; margin-top: 10px;"><%= subcategory[0].subCategory.title %></h1>
+                    <hr class="subcategory-divider">
+                    <div class="product-container">
+                      <% subcategory.forEach(service => { %>
+                        <div class="product-card">
+                          <div class="product-image">
+                            <img src="<%= service.image %>" class="product-thumb" alt="">
+                            
+                          </div>
+                          <div class="product-info">
+                            <h2 class="product-brand"><%= service.name %></h2>
+                            <p class="product-short-description"><%= service.description %></p>
+                            <span class="price"> <%= service.price %>₹</span>
+                            <% if (cartServiceIds.includes(service._id.toString())) { %>
+                              <button class="card-btn" disabled>Item Already In Cart</button>
+                          <% } else { %>
+                              <form method="POST" action="/add-to-cart">
+                                  <input type="hidden" name="serviceId" value="<%= service._id %>">
+                                  <input type="hidden" name="fromPage" value="<%= req.originalUrl %>">
+                                  <button type="submit" class="card-btn">Add to Cart</button>
+                              </form>
+                          <% } %>                           
+                          </div>
+                        </div>
+                      <% }) %>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+
+            <%- include('partials/footer'); -%>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function() {
+  // Attach a click event listener to the "add to cart" button
+  $(".add-to-cart").on("click", function(event) {
+    // Prevent the default behavior of the click event (which is to follow the link)
+    event.preventDefault();
+
+    // Extract the service ID from the data attribute
+    const serviceId = $(this).data("service-id");
+
+    // Send an AJAX request to add the service to the cart
+    $.ajax({
+      url: "/add-to-cart",
+      type: "POST",
+      data: {
+        serviceId: serviceId
+      },
+      success: function() {
+        // Reload the page to update the cart count in the header
+        window.location.reload();
+      },
+      error: function(xhr, status, error) {
+        console.log(error);
+        alert("Error: could not add item to cart.");
+      }
+    });
+  });
+});
+            </script>
+</body>
+
+</html>

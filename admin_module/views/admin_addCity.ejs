@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <title>Admin Panel:Add Service Agent</title>
+    <link rel="stylesheet" href="admin_service_form.css">
+    <link rel="icon" type="image/x-icon" href="images/logo_2.png">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+</head>
+
+<body>
+  <%- include('partials/admin_nav'); -%>
+        <header>
+            <h1>
+               
+                Add Service Agent
+            </h1>
+            <div class="user-wrapper">
+                
+                <span class="las la-user" height="50px" style="margin-right: 10px;"></span>
+                <div>
+                    <% var firstName = fullName.split(" ")[0]; %>
+                    <h4><%= firstName %></h4>
+                    <small>Super Admin</small>
+                </div>
+            </div>
+        </header>
+    </div>
+    <div class="main-content">
+        <div class="cards">
+          <div class="card-double">
+            <div>
+              <form action="/addCity" method="post">
+                <table id="add-a-service">
+                  
+                  <tr>
+                    <td>
+                      <label class="service">City Name</label>
+                    </td>
+                    <td>
+                      <input type="text" id="first-name" name="cityName" required>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <label class="service">State Name</label>
+                    </td>
+                    <td>
+                      <input type="text" id="first-name" name="stateName" required>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <label class="service">Country Name</label>
+                    </td>
+                    <td>
+                      <input type="text" id="first-name" name="countryName" required>
+                    </td>
+                  </tr>
+                </table>
+                <center>
+                  <input type="submit" name="submit" value="Add">
+                </center>
+              </form>
+            </div>
+          </div>
+        </div>
+      <div class="back_btn">
+          <a href="/cities" style="color:white; text-align: center;">Back</a>
+      </div>
+      </div>
+      
+        
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  
+</script>
+
+</body>
+
+</html>

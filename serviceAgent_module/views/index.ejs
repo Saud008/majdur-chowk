@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/index_header'); -%>
+
+<body>
+    <div class="container">
+        <div class="navbarr">
+            <div class="logoo">
+                <div class="c">
+                <a href="/"><img src="images/logo.png" width="125px"></a></div>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="">Home</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+            <% if(status == 1) { %>
+                <div class="dropdown">
+                    <a href="#"><img src="images/profile_avatar_main.png" style="height: 45px; margin-right: 15px;" class="dropbtn"></a>
+                    <div class="dropdown-content">
+                        <a href="/my-account">My Account</a>
+                        <a href="/my-orders">My Orders</a>
+                        
+                        <a href="/signOut">Sign Out</a>
+                    </div>
+                </div>
+                    
+            <% }
+             else { %>
+                <a href="/login" style="margin-right: 15px;">LOGIN</a>
+            <% } %>
+            <a href="/cart" style="position:relative;">
+                <img src="/images/cart_dark.png" height="30px" width="30px" style="margin-top: 5px; margin-right: 10px;">
+                <span style="position:absolute; top:-5px; right:-10px; background-color:red; color:white; border-radius:50%; width:20px; height:20px; text-align:center; font-size:12px; font-weight:bold;">
+                  <%= cart.items.length %>
+                </span>
+              </a>
+              
+        </div> 
+        </div>
+    <div class="header">
+        
+            <hr style="margin-top: 10px;">
+            <div class="row">
+                <div class="col-22" style="margin-right: 250px;" >
+                    <h1 >Give Us A Chance To Serve You!</h1>
+
+                    <form id="form_search" action="/searchService" method="post">
+                        <input type="text" id="searchInput" name="serviceSearched" placeholder="Search for service categories..." required autocomplete="off">
+                        <div id="searchDropdown" class="dropdown-menu"></div>
+                    </form>
+                      
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+    <!--------------Featured catagories---------------->
+
+    <div class="categories">
+        <div class="small-container">
+            <div class="row">
+                    <% for(var i=0; i < 3; i++) { %>
+                         <div class="col-3">
+                            <a href="/services/<%= categories[i]._id %>"><img src="<%= categories[i].imagePath %>"></a>
+                            <h3><%= categories[i].categoryName %> Service </h3>
+                        </div>
+                  <% } %>
+                <div class="col-3">
+                <p><b> For More Services click</b></p>
+                <a href="/services" class="btn">Explore Now &#8594;</a>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!----------testimonial------------>
+
+    <h1 style="text-align: center; margin-top: 20px;">Testimonials</h1>
+    <hr style="width: 40%; margin-top: 10px; margin-left: 30%;">
+    <div class="testimonial">
+        <div class="small-container">
+            <div class="row">
+                <% for (let i = 0; i < testimonials.length; i++) { %>
+                    <div class="col-3">
+                        <i class="fa fa-quote-left"></i>
+                        <p><%= testimonials[i].feedback %></p>
+                        <div class="rating">
+                            <% for (let j = 0; j < Math.floor(testimonials[i].rating); j++) { %>
+                                <i class="fa fa-star"></i>
+                            <% } %>
+                            <% if (testimonials[i].rating % 1 !== 0) { %>
+                                <i class="fa fa-star-half-o"></i>
+                            <% } %>
+                            <% for (let k = 0; k < 5 - Math.ceil(testimonials[i].rating); k++) { %>
+                                <i class="fa fa-star-o"></i>
+                            <% } %>
+                        </div>
+                        <h3><%= testimonials[i].userId.fullName %></h3>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    
+
+    <!------Brands------->
+    <h1 style="text-align: center; margin-top: 50px;">Companies We Work With</h1>
+    <hr style="width: 40%; margin-top: 10px; margin-left: 30%;">
+    <div class="brands">
+        <div class="small-container">
+            <div class="row">
+                <div class="col-5">
+                    <img src="images/logo-godrej.png">
+                </div>
+                <div class="col-5">
+                    <img src="images/logo-oppo.png">
+                </div>
+                <div class="col-5">
+                    <img src="images/microsoft.png">
+                </div>
+                <div class="col-5">
+                    <img src="images/logo-paypal.png">
+                </div>
+                <div class="col-5">
+                    <img src="images/logo-philips.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-------------Fotter------------->
+
+    <%- include('partials/footer'); -%>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+   $(document).ready(function () {
+  // Perform search on keyup event in the search input
+  $("#searchInput").on("keyup", function () {
+    const searchValue = $(this).val().trim();
+    
+    if (searchValue === "") {
+      $("#searchDropdown").hide();
+      return;
+    }
+
+    // Make an AJAX request to the server with the search value
+    $.ajax({
+      url: "/search-service",
+      method: "POST",
+      data: { serviceSearched: searchValue },
+      success: function (data) {
+        // Update the search dropdown with the returned data
+        const searchDropdown = $("#searchDropdown");
+        searchDropdown.html(data);
+
+        // Show/hide the dropdown depending on if there are search results
+        if (data !== "") {
+          searchDropdown.show();
+        } else {
+          searchDropdown.hide();
+        }
+      },
+      error: function () {
+        console.log("Error: could not retrieve search results.");
+      }
+    });
+  });
+
+  // Set the selected service from the dropdown as the search input value
+  $(document).on("click", "#searchDropdown .dropdown-item", function (event) {
+    event.preventDefault();
+    const selectedService = $(this).text();
+    $("#searchInput").val(selectedService);
+    $("#searchDropdown").hide();
+  });
+
+  $("body").on("focus", function () {
+  $("#searchDropdown").hide();
+});
+
+  // Perform search on form submission
+  $("#form_search").on("submit", function (event) {
+    event.preventDefault();
+    const searchValue = $("#searchInput").val().trim();
+    alert(searchValue);
+  });
+});
+
+    </script>
+</body>
+</html>

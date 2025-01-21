@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Add Address</title>
+    <meta charset="UTF-8" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/logo_2.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie-edge" />
+    <!--<title> Registration Form in HTML CSS</title> -->
+    <!--- Custom CSS File--->
+    <link rel="stylesheet" href="register_style.css" />
+</head>
+
+<body>
+    <div class="logo">
+        <img src="images/logo.png" width="180px">
+    </div>
+    <section class="container">
+        <h1> Add Address </h1>
+        
+        <form action="/add_address" class="form" method="post" novalidate>
+            
+            <div class="column">
+                <div class="input-box">
+                  <label>Address</label>
+                  <input type="textarea" name="address" placeholder="Enter Address" required/>
+                </div>
+              </div>
+            
+              <br>
+            
+              <div class="column">
+                <label>City</label>
+                <div class="select-box">
+                  <select name="city">
+                    <option hidden>City</option>
+                    <% cities.forEach(city => { %>
+                    <option value="<%= city._id %>"><%= city.cityName %></option>
+                    <% }) %>
+                  </select>
+                </div>
+              </div>
+            
+              <div class="column">
+                <div class="input-box">
+                  <label>Pincode</label>
+                  <input type="number" name="pin" placeholder="Enter Pincode" required/>
+                </div>
+              </div>
+            <button type="submit" class="form_button">Submit</button>
+          </section>
+ 
+</body>
+</html>

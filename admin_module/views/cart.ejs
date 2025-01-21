@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+ <%- include('partials/cart_header'); -%>
+ 
+<body>
+  
+  <%
+  function getFormattedDate(date) {
+    const year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    if (month < 10) {
+      month = '0' + month;
+    }
+    let day = date.getDate();
+    if (day < 10) {
+      day = '0' + day;
+    }
+    return `${year}-${month}-${day}`;
+  }
+  %>
+    <div class="container">
+        <div class="navbarr">
+            <div class="logoo">
+                <div class="c">
+                <a href="/"><img src="/images/logo.png" width="125px"></a></div>
+            </div>
+            <nav>
+                <ul id="MenuItems" >
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+            <% if(status == 1) { %>
+                <div class="dropdown">
+                    <a href="#"><img src="/images/profile_avatar_main.png" style="height: 45px; margin-right: 15px;" class="dropbtn"></a>
+                    <div class="dropdown-content">
+                        <a href="/my-account">My Account</a>
+                        <a href="/my-orders">My Orders</a>
+                       
+                        <a href="/signOut">Sign Out</a>
+                    </div>
+                </div>
+                    
+            <% }
+             else { %>
+                <a href="/login" style="margin-right: 15px; color: #000; text-decoration: none;">LOGIN</a>
+            <% } %>
+            <a href="/cart" style="position:relative;">
+                <img src="/images/cart_dark.png" height="30px" width="30px" style="margin-top: 5px; margin-right: 10px;">
+                <span style="position:absolute; top:-5px; right:-10px; background-color:red; color:white; border-radius:50%; width:20px; height:20px; text-align:center; font-size:12px; font-weight:bold;">
+                  <%= cart.items.length %>
+                </span>
+              </a>
+        </div>
+        </div>
+        <hr style="display: block;">
+    </section>
+    <% if(cart.items.length == 0){ %>
+      <div style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300px;
+      font-size: 24px;
+      color: #999;
+      text-align: center;">
+        <h2>Your Cart is Empty</h2>
+        
+      </div>
+      
+    <% } else { %>
+      <body>
+        <% if (typeof error !== 'undefined' && error !== '') { %>
+          <div style="color: red; background-color: rgb(229, 177, 177); height: 30px; width: 100%; margin-top: 20px; font-weight: bold; ">
+            <%= error %>
+          </div>
+        <% } %>
+      
+    <div class="cart-page">
+        <div class="cart-table">
+          <form method="POST" action="/checkout">
+          <table>
+            <thead>
+              <tr>
+                <th style="text-align:center;">Product</th>
+                <th style="text-align:center;">Name</th>
+                <th style="text-align:center;">Price</th>
+                <th style="text-align:center;">Select Date</th>
+                <th style="text-align:center;">Select Time</th>
+            
+              </tr>
+            </thead>
+            
+            <tbody>
+              
+                <% cart.items.forEach(function(item) { %>
+                  <tr>
+                    <td><img src="<%= item.serviceId.image %>" alt="<%= item.serviceId.name %>"></td>
+                    <td><%= item.serviceId.name %></td>
+                    <td><%= item.serviceId.price %></td>
+                    
+                    <td>
+                      <input type="date" name="dates[<%= item.serviceId._id %>]" required 
+                             min="<%= getFormattedDate(new Date()) %>" style="width: 60%;">
+                    </td>
+                    <td>
+                      <select name="timeslots[<%= item.serviceId._id %>]" required>
+                        <option value="">--Select Time--</option>
+                        <% for (var hour = 8; hour <= 20; hour++) { %>
+                          <% for (var minute = 0; minute < 60; minute += 30) { %>
+                            <% var time = (hour < 10 ? '0' + hour : hour) + ':' + (minute === 0 ? '00' : minute) %>
+                            <% var dateTime = time %>
+                            <% var disabled = '' %>
+                            <option value="<%= dateTime %>" <%= disabled %>>
+                              <%= time %>
+                            </option>
+                          <% } %>
+                        <% } %>
+                      </select>
+                    </td>
+                    
+                  
+                      <td>
+                        <a href="/delete_service?serviceId=<%= item.serviceId._id %>" class="las la-trash deleteLink" style="font-size: 30px; color: black; background: none; border: none;"></a>
+                      </td>
+                    
+                  </tr>
+                <% }); %>
+              </tbody>
+              
+            
+          </table>
+        
+        </div>
+        <div class="cart-total">
+          <%
+            var subtotal = parseFloat(subtotal); 
+            var discount1 = subtotal * 0.05;
+            var discount2 = subtotal * 0.05;
+            var total = subtotal + discount1 + discount2;
+          %>
+            <table>
+              <tr>
+                <td>Subtotal:</td>
+                <td>₹<%=subtotal.toFixed(2)%></td>
+              </tr>
+              <tr>
+                <td>CGST (5%):</td>
+                <td>₹<%=discount1.toFixed(2)%></td>
+              </tr>
+              <tr>
+                <td>SGST (5%):</td>
+                <td>₹<%=discount2.toFixed(2)%></td>
+              </tr>
+              <tr>
+                <td>Total:</td>
+                <td>₹<%=total.toFixed(2)%></td>
+              </tr>
+              
+            </table>
+            <button type="submit" class="btn" style="margin-right: 5%; border: none; padding: 9px 20px; font-size: medium; margin-left: 10px">Checkout</button>
+            <a href="/services" class="btn">Continue Shopping</a>
+          </div>
+      </div>
+    </div>
+    
+  </form>
+    
+    <% } %>
+    
+<%- include('partials/footer'); -%>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('partials/services_header'); -%>
+
+<body>
+    <div class="small" style="background-color: white;">
+        <div class="container" style="padding-top: 10px;">
+            <div class="navbar" >
+                <div class="logo">
+                    <a href="/"><img src="images/logo.png" width="125px"></a>
+                </div>
+                <nav>
+                    <ul id="MenuItems">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/services">Services</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <% if(status == 1) { %>
+                    <div class="dropdown">
+                        <a href="#"><img src="images/profile_avatar_main.png" style="height: 45px; margin-right: 15px;" class="dropbtn"></a>
+                        <div class="dropdown-content">
+                            <a href="/my-account">My Account</a>
+                            <a href="/my-orders">My Orders</a>
+                            
+                            <a href="/signOut">Sign Out</a>
+                        </div>
+                    </div>
+                <% }
+                 else { %>
+                <a href="/login" style="margin-right: 15px;">LOGIN</a>
+                <% } %>
+                <a href="/cart" style="position:relative;">
+                    <img src="/images/cart_dark.png" height="30px" width="30px" style="margin-top: 5px; margin-right: 10px;">
+                    <span style="position:absolute; top:-5px; right:-10px; background-color:red; color:white; border-radius:50%; width:20px; height:20px; text-align:center; font-size:12px; font-weight:bold;">
+                      <%= cart.items.length %>
+                    </span>
+                  </a>
+            </div> 
+    </div>
+    <hr style="display: block; background-color: black; width: 100%;">
+        </div>
+    </div>
+    
+
+
+    <!--------------Featured product---------------->
+    <section id="service">
+        <div class="title-text">
+            <p>SERVICES</p>
+            <h1>We Provide Better</h1>
+        </div>
+
+        <div class="service-box">
+        <% categories.forEach(function(category) { %>
+        
+            <div class="single-service">
+                <a href="/services/<%= category._id %>">
+                    <div class="overlay"></div>
+                </a>
+                <img src="<%= category.imagePath %>">
+                <div class="service-desc">
+                    <a href="/services/<%= category._id %>">
+                        <h3><%= category.categoryName %> Services</h3>
+                    </a>
+                <a href="/services/<%= category._id %>"><hr></a>
+                    <a href="/services/<%= category._id %>">
+                        <p><%= category.categoryDescription %></p>
+                    </a>
+                </div>
+            </div>
+        <% }); %>
+        </div>
+    
+    </section>
+
+    <!-------------Fotter------------->
+
+    <%- include('partials/footer'); -%>
+</body>
+
+</html>

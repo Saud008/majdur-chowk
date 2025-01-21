@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/index_header'); -%>
+    
+<body>
+    <div class="account-page">
+        <div class="logo">
+            <a href="/"><img src="images/logo.png" width="180px"></a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <img src="../images/Service.png" width="100%">
+                </div>
+                <div class="col-2">
+                    <div class="form-container">
+                        <div class="form-btn">
+                            <span >Login</span>
+                            <hr id="Indicator">
+                        </div>
+
+                        <form action="/login" method="post">   
+                            <input type="text" placeholder="Email Address" name="email">
+                            <input type="password" placeholder="Password" name="password">
+                            <button type="submit" class="btn" name="login">Login</button>
+                            <a href="/forgotPassword">Forgot Password?</a><br><br>
+                            <a href="/register">Don't have an account?</a>
+                            
+                        </form>
+
+                       
+                        <h5 style="margin-top: 10px;"><%=message%></h5>
+                        
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+         
+    </div>
+</div>
+
+<%- include('partials/footer'); -%>
+
+
+</body>
+</script>
+
+</html>

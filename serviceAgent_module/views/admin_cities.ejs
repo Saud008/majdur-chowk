@@ -1,0 +1,132 @@
+<html>
+
+<head>
+    <title>Admin Panel:Cities</title>
+    <link rel="stylesheet" href="admin_services.css">
+    <link rel="icon" type="image/x-icon" href="/images/logo_2.png">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+</head>
+
+<body>
+  <%- include('partials/admin_nav'); -%>
+        <header>
+            <h1>
+                <label class="nav-toggle">
+                    <span class="   "></span>
+                </label>
+                Cities
+            </h1>
+            
+
+            <div class="user-wrapper">
+                
+                <span class="las la-user" height="50px" style="margin-right: 10px;"></span>
+                <div>
+                    <% var firstName = fullName.split(" ")[0]; %>
+                    <h4><%= firstName %></h4>
+                    <small>Super Admin</small>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    
+    <div class="main-content">
+        <div ><a href="/addCity" class="add">
+            <span style="color: white;"><i class="las la-plus"></i> Add City</span></a>
+    </div>
+   
+        <div class="order_table">
+            <label for="search">Search City:</label>
+            <input type="text" id="search" name="search" style="margin-bottom: 10px;">
+  
+            <table>
+                <thead style ="text-align: center;">
+                    <tr>
+                        <th>Sr No.</th>
+                        <th>City Name</th>
+                        <th>State Name </th>
+                        <th>Country Name </th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align: center;">
+                    <% let count = 1; %>
+                    <% cities.forEach(city => { %>
+                      <tr>
+                        <td><%= count++ %></td>
+                        
+                        <td><%= city.cityName %></td>
+                        <td><%= city.stateName %></td>
+                        <td><%= city.countryName %></td>
+                        <td class="format">
+                          
+                          <a href="#" id="" data-record-id="<%= city.id %>" class="las la-trash deleteLink" style="font-size: 32px; color: black;"></a>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  </tbody>
+            </table>
+
+
+        </div>
+            
+        
+    </div>
+
+   
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+          // Add event listener for keyup on search input field
+          $("#search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("tbody tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+          document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("deleteLink")) {
+  event.preventDefault();
+
+  const result = confirm("Are you sure you want to delete?");
+
+  if (result) {
+    const recordId = event.target.getAttribute("data-record-id");
+    const deleteUrl = "/deleteCity/" + recordId;
+
+    // Check if the service provider has any bookings before deleting
+    fetch(`/checkBookings/${recordId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.hasBookings) {
+          alert("Cannot delete this City as it is assigned to a service request.");
+        } else {
+          fetch(deleteUrl, {
+            method: "DELETE",
+          })
+            .then((response) => {
+              if (response.status === 204) {
+                window.location.href = "/cities";
+              } else {
+                alert("There was a problem deleting the record.");
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+}
+          });
+
+        });
+      </script>
+</body>
+
+</html>

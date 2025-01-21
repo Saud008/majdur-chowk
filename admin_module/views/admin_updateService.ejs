@@ -1,0 +1,136 @@
+<html>
+
+<head>
+    <title>Admin Panel:Update Service</title>
+    <link rel="stylesheet" href="/admin_service_form.css">
+    <link rel="icon" type="image/x-icon" href="/images/logo_2.png">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+</head>
+
+<body>
+    <%- include('partials/admin_nav'); -%>
+        <header>
+            <h1>
+               
+                Update Service
+            </h1>
+            <div class="user-wrapper">
+                
+                <span class="las la-user" height="50px" style="margin-right: 10px;"></span>
+                <div>
+                    <% var firstName = fullName.split(" ")[0]; %>
+                    <h4><%= firstName %></h4>
+                    <small>Super Admin</small>
+                </div>
+            </div>
+        </header>
+    </div>
+    <div class="main-content">
+        <div class="cards">
+            <div class="card-double">
+                <div>
+                    <form action="/updateService/<%=service._id%>" method="post" enctype="multipart/form-data">
+                        <table id="add-a-service">
+                            <td>
+                                <label class="service">Category of the Service</label>
+                              </td>
+                              <td>
+                                <select id="category" name="category" required>
+                                  <% serviceCategories.forEach(category => { %>
+                                    <option value="<%= category._id %>" <%= category._id == service.category ? 'selected' : '' %>><%= category.categoryName %></option>
+                                  <% }) %>
+                                </select>
+                              </td>
+                              </tr>
+                              <tr>
+                              <td>
+                                <label class="service">Subcategory of the Service</label>
+                              </td>
+                              <td>
+                                <select id="subcategory" name="subcategory" required>
+                                  <% serviceSubcategories.forEach(subcategory => { %>
+                                    <option value="<%= subcategory._id %>" <%= subcategory._id == service.subCategory ? 'selected' : '' %>><%= subcategory.title %></option>
+                                  <% }) %>
+                                </select>
+                              </td>
+                              </tr>
+                              
+                            <tr>
+                                <td>
+                                    <label class="service">Name  of the Service</label>
+                                </td>
+                                <td>
+                                    <input type="text" name="name" value="<%= service.name%>" required> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="service">Price of Service</label>
+                                </td>
+                                <td>
+                                    <input type="number" name="price" value="<%= service.price%>" required>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><label class="service">Description</label></td>
+                                <td><input type="text" id="middle-name" value="<%= service.description%>" name="description"></td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                  <label class="service">Image</label>
+                                </td>
+                                <td>
+                                  <input type="file" name="image" accept="image/*">
+                                </td>
+                              </tr>
+                        </table>
+                        <center><input type="submit" value="Update"></center>
+                        
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="back_btn">
+            <a href="/services" style="color:white; text-align: center;">Back</a>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+              // Get the category select element
+               var categorySelect = $("#category");
+              // // Get the subcategory select element
+               var subcategorySelect = $("#subcategory");
+              // // Store the options for each subcategory
+               var subcategoryOptions = {};
+              // // Loop through each category
+              categorySelect.change(function() {
+                // Get the selected category value
+                var categoryId = $(this).val();
+                // Clear the subcategory options
+                subcategorySelect.empty();
+                
+                // If the selected category is not empty
+                if (categoryId != "") {
+                  // If we've already fetched the subcategory options for this category, use them
+                  if (subcategoryOptions[categoryId]) {
+                    subcategorySelect.append(subcategoryOptions[categoryId]);
+                  } else {
+                    // Otherwise, fetch the subcategories from the server and store the options for future use
+                    $.get("/getSubcategories/" + categoryId, function(data) {
+                      data.forEach(function(subcategory) {
+                        subcategorySelect.append("<option value='" + subcategory._id + "'>" + subcategory.title + "</option>");
+                      });
+                      subcategoryOptions[categoryId] = subcategorySelect.html();
+                    });
+                  }
+                }
+              });
+            });
+          </script>
+</body>
+
+</html>
